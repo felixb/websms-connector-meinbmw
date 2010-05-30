@@ -20,4 +20,12 @@
 <resources>
 	<string name="connector_meinbmw_preferences">Einstellungen - MeinBMW</string>
 	<string name="connector_meinbmw_enable_">Aktiviere MeinBMW</string>
+	<string name="error_sms_page_result">Unerwartete Rückgabe beim Laden der SMS-Seite: </string>
+	<string name="error_login_sms_unknown">Das Anmelden und/oder Aufrufen der SMS-Seite ist aus unbekannten Gründen gescheitert.</string>
+	<string name="error_login_form_result">Unerwartete Rückgabe beim Absenden der Anmeldemaske: </string>
+	<string name="error_sms_expired">Das SMS-Kontingent ist für heute ausgeschöpft.</string>
+	<string name="error_sms_form_result">Unerwartete Rückgabe beim Absenden der SMS-Eingabemaske: </string>
+	<string name="error_sending_sms_unknown">Das Versenden der SMS ist aus unbekannten Gründen gescheitert.</string>
+	<string name="error_no_post_url_found">Es konnte keine Absendeadresse für die Anmeldemaske ermittelt werden.</string>
+	<string name="error_no_session_input_value_found">Es konnte kein Sitzungsidentifizierer ermittelt werden.</string>
 </resources>

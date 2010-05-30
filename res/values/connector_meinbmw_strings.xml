@@ -24,4 +24,12 @@
 	<string name="connector_meinbmw_name">MeinBMW</string>
 	<string name="connector_meinbmw_preferences">Preferences - MeinBMW</string>
 	<string name="connector_meinbmw_enable_">Enable MeinBMW</string>
+	<string name="error_sms_page_result">Unexpected HTTP result when opening SMS page: </string>
+	<string name="error_login_sms_unknown">Could not login and/or open SMS page for an unknown reason.</string>
+	<string name="error_login_form_result">Unexpected HTTP result when submitting login form: </string>
+	<string name="error_sms_expired">SMS are expired for today.</string>
+	<string name="error_sms_form_result">Unexpected HTTP result when submitting SMS form: </string>
+	<string name="error_sending_sms_unknown">Could not send SMS for an unknown reason.</string>
+	<string name="error_no_post_url_found">Could not find Post URL for login form.</string>
+	<string name="error_no_session_input_value_found">Could not find the session id.</string>
 </resources>
