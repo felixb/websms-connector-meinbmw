@@ -82,7 +82,7 @@ public class ConnectorMeinBMW extends Connector {
 	}
 
 	@Override
-	protected final void doSend(final Context context, final Intent intent)	throws WebSMSException {
+	protected final void doSend(final Context context, final Intent intent) {
 		setCurrentContext(context);
 
 		tryToLoadSmsPage();
@@ -153,7 +153,7 @@ public class ConnectorMeinBMW extends Connector {
 		return cc.getText();
 	}
 
-	private final void tryToLoadSmsPage() throws WebSMSException {
+	private final void tryToLoadSmsPage() {
 		StatusLine httpResult;
 		httpResult = performHttpRequest(new HttpGet(SMS_PAGE_URL));
 
@@ -165,7 +165,7 @@ public class ConnectorMeinBMW extends Connector {
 		return currentHtmlResultPage.indexOf(SMS_PAGE_LOAD_SUCCESS_SUBSTRING) > -1;
 	}
 
-	private final void doLogin(final String user, final String password) throws WebSMSException {
+	private final void doLogin(final String user, final String password) {
 		StatusLine httpResult;
 
 		final String sessionInputValueLogin = extractSessionInputValue();
@@ -182,7 +182,7 @@ public class ConnectorMeinBMW extends Connector {
 			throw new WebSMSException(getStringResource(R.string.error_login_sms_unknown));
 	}
 
-	private final void sendSms(String phonenumber, final String message) throws WebSMSException {
+	private final void sendSms(String phonenumber, final String message) {
 		phonenumber = Utils.international2oldformat(phonenumber);
 
 		if (areSmsExiredForToday())
@@ -199,7 +199,7 @@ public class ConnectorMeinBMW extends Connector {
 			throw new WebSMSException(getStringResource(R.string.error_sending_sms_unknown));
 	}
 	
-	private final StatusLine performRawLogin(final String user, final String password, final String postDestinationUrl, final String sessionInputValueLogin) throws WebSMSException {
+	private final StatusLine performRawLogin(final String user, final String password, final String postDestinationUrl, final String sessionInputValueLogin) {
 		final HttpPost httppost = new HttpPost(postDestinationUrl);
 
 		final ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
@@ -215,7 +215,7 @@ public class ConnectorMeinBMW extends Connector {
 		return performHttpRequest(httppost);
 	}
 
-	private final StatusLine performRawSendSms(final String phonenumber, final String message, final String sessionInputValueSms) throws WebSMSException {
+	private final StatusLine performRawSendSms(final String phonenumber, final String message, final String sessionInputValueSms) {
 		final HttpPost httppost = new HttpPost(SMS_PAGE_URL);
 
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
@@ -231,7 +231,7 @@ public class ConnectorMeinBMW extends Connector {
 		return performHttpRequest(httppost);
 	}
 
-	private final HttpEntity getUTF8FormEntity(final ArrayList<NameValuePair> nameValuePairs) throws WebSMSException {
+	private final HttpEntity getUTF8FormEntity(final ArrayList<NameValuePair> nameValuePairs) {
 		try {
 			return new UrlEncodedFormEntity(nameValuePairs, "UTF-8");
 		}
@@ -240,7 +240,7 @@ public class ConnectorMeinBMW extends Connector {
 		}
 	}
 
-	private final StatusLine performHttpRequest(final HttpRequestBase request) throws WebSMSException {
+	private final StatusLine performHttpRequest(final HttpRequestBase request) {
 		try {
 			final HttpResponse response = httpclient.execute(request);
 			final HttpEntity entity = response.getEntity();
@@ -255,14 +255,14 @@ public class ConnectorMeinBMW extends Connector {
 		}
 	}
 
-	private final String extractRelativePostUrl() throws WebSMSException {
+	private final String extractRelativePostUrl() {
 		final Matcher matcher = postUrlExtractPattern.matcher(currentHtmlResultPage);
 		if(matcher.matches())
 			return matcher.group(1);
 		throw new WebSMSException(getStringResource(R.string.error_no_post_url_found));
 	}
 
-	private final String extractSessionInputValue() throws WebSMSException {
+	private final String extractSessionInputValue() {
 		final Matcher matcher = sessionInputValueExtractPattern.matcher(currentHtmlResultPage);
 		if(matcher.matches())
 			return matcher.group(1);
