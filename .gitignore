@@ -2,3 +2,5 @@
 .project
 bin
 gen
+build.properties
+local.properties
