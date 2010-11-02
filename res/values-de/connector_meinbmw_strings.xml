@@ -20,6 +20,7 @@
 <resources>
 	<string name="connector_meinbmw_preferences">Einstellungen - MeinBMW</string>
 	<string name="connector_meinbmw_enable_">Aktiviere MeinBMW</string>
+	<string name="error_length">Es sind maximal 160 Zeichen erlaubt.</string>	
 	<string name="error_sms_page_result">Unerwartete Rückgabe beim Laden der SMS-Seite: </string>
 	<string name="error_login_sms_unknown">Das Anmelden und/oder Aufrufen der SMS-Seite ist aus unbekannten Gründen gescheitert.</string>
 	<string name="error_login_form_result">Unerwartete Rückgabe beim Absenden der Anmeldemaske: </string>

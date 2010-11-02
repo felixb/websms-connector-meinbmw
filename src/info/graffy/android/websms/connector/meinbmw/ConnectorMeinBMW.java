@@ -54,14 +54,16 @@ public class ConnectorMeinBMW extends Connector {
 
 	private final static String ROOT_PAGE_URL  = "https://www.meinbmw.de";
 	private final static String SMS_PAGE_URL = "https://www.meinbmw.de/DownloadsServices/Services/SMSService/tabid/80/Default.aspx";
+	private final static String REFERER_URL = "https://www.meinbmw.de/default.aspx";
+	private final static String USER_AGENT = "";
+	private final static String ENCODING = "UTF-8";
+	private final static String[] SSL_FINGERPRINTS = { "b4:2b:76:39:ec:53:ee:83:39:02:a3:70:c1:fc:a9:a5:f7:24:d5:2a" };
 	private final static String SESSION_INPUT_VALUE_REGEXP = ".*<input type=\"hidden\" name=\"__VIEWSTATE_CACHEKEY\" id=\"__VIEWSTATE_CACHEKEY\" value=\"(VS_[a-z\\d]+_\\d+)\" />.*";
 	private final static String LOGIN_POST_DESTINATION_REGEXP = ".*<form name=\"Form\" method=\"post\" action=\"(/DownloadsServices/.+/SMSService/tabid/80/ctl/Login/Default.aspx\\?returnurl=.+\\.aspx)\" id=\"Form\" enctype=\"multipart/form-data\" .*";
 	private final static String SEND_SUCCESS_SUBSTRING = "versendet !";
 	private final static String SMS_PAGE_LOAD_SUCCESS_SUBSTRING = "MeinBMW.de - Downloads & Services - MeinBMW Services - SMS Service";
 	private final static String WRONG_LOGIN_MESSAGE_SUBSTRING = "Sie konnten nicht authentifiziert werden";
 	private final static String TODAYS_SMS_EXPIRED_SUBSTRING = "heute ist erreicht. Bitte nutzen Sie diesen Service wieder ab Morgen";
-
-	//TODO: Namen der Form-Inputs (und konstante Werte) in Konstanten auslagern
 
 	private static String currentHtmlResultPage;
 	private static Context currentContext;
@@ -155,7 +157,7 @@ public class ConnectorMeinBMW extends Connector {
 
 	private final void tryToLoadSmsPage() {
 		StatusLine httpResult;
-		httpResult = performHttpRequest(new HttpGet(SMS_PAGE_URL));
+		httpResult = performHttpRequestForStatusLine(SMS_PAGE_URL);
 
 		if (httpResult.getStatusCode() != HttpStatus.SC_OK)
 			throw new WebSMSException(getStringResource(R.string.error_sms_page_result) + httpResult.toString());
@@ -185,6 +187,9 @@ public class ConnectorMeinBMW extends Connector {
 	private final void sendSms(String phonenumber, final String message) {
 		phonenumber = Utils.international2oldformat(phonenumber);
 
+		if (message.length() > 160)
+			throw new WebSMSException(getStringResource(R.string.error_length));
+
 		if (areSmsExiredForToday())
 			throw new WebSMSException(getStringResource(R.string.error_sms_expired));
 
@@ -198,11 +203,9 @@ public class ConnectorMeinBMW extends Connector {
 		if (sendingFailed())
 			throw new WebSMSException(getStringResource(R.string.error_sending_sms_unknown));
 	}
-	
-	private final StatusLine performRawLogin(final String user, final String password, final String postDestinationUrl, final String sessionInputValueLogin) {
-		final HttpPost httppost = new HttpPost(postDestinationUrl);
 
-		final ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	private final StatusLine performRawLogin(final String user, final String password, final String postDestinationUrl, final String sessionInputValueLogin) {
+		final ArrayList<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
 		nameValuePairs.add(new BasicNameValuePair("dnn$ctr$Login$Login_DNN$txtUsername", user));
 		nameValuePairs.add(new BasicNameValuePair("dnn$ctr$Login$Login_DNN$txtPassword", password));
 		nameValuePairs.add(new BasicNameValuePair("dnn$ctr$Login$Login_DNN$cmdLogin", "Login"));
@@ -210,15 +213,12 @@ public class ConnectorMeinBMW extends Connector {
 		nameValuePairs.add(new BasicNameValuePair("__EVENTARGUMENT", ""));
 		nameValuePairs.add(new BasicNameValuePair("__VIEWSTATE_CACHEKEY", sessionInputValueLogin));
 		nameValuePairs.add(new BasicNameValuePair("__VIEWSTATE", ""));
-		httppost.setEntity(getUTF8FormEntity(nameValuePairs));
-
-		return performHttpRequest(httppost);
+		
+		return performHttpRequestForStatusLine(postDestinationUrl, nameValuePairs);
 	}
 
 	private final StatusLine performRawSendSms(final String phonenumber, final String message, final String sessionInputValueSms) {
-		final HttpPost httppost = new HttpPost(SMS_PAGE_URL);
-
-		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		final ArrayList<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
 		nameValuePairs.add(new BasicNameValuePair("dnn$ctr493$SfiSms_View$phone", phonenumber));
 		nameValuePairs.add(new BasicNameValuePair("dnn$ctr493$SfiSms_View$subject", message));
 		nameValuePairs.add(new BasicNameValuePair("dnn$ctr493$SfiSms_View$sendData", "Senden"));
@@ -226,26 +226,21 @@ public class ConnectorMeinBMW extends Connector {
 		nameValuePairs.add(new BasicNameValuePair("__EVENTARGUMENT", ""));
 		nameValuePairs.add(new BasicNameValuePair("__VIEWSTATE_CACHEKEY", sessionInputValueSms));
 		nameValuePairs.add(new BasicNameValuePair("__VIEWSTATE", ""));
-		httppost.setEntity(getUTF8FormEntity(nameValuePairs));
 
-		return performHttpRequest(httppost);
+		return performHttpRequestForStatusLine(SMS_PAGE_URL, nameValuePairs);
 	}
 
-	private final HttpEntity getUTF8FormEntity(final ArrayList<NameValuePair> nameValuePairs) {
-		try {
-			return new UrlEncodedFormEntity(nameValuePairs, "UTF-8");
-		}
-		catch (UnsupportedEncodingException e) {
-			throw new WebSMSException(e);
-		}
-	}
 
-	private final StatusLine performHttpRequest(final HttpRequestBase request) {
+	private final StatusLine performHttpRequestForStatusLine(final String url) {
+		return performHttpRequestForStatusLine(url, null);	
+	}
+	
+	private final StatusLine performHttpRequestForStatusLine(final String url, final ArrayList<BasicNameValuePair> postData) {
 		try {
-			final HttpResponse response = httpclient.execute(request);
+			final HttpResponse response = performHttpRequestForStatusLineForResponse(url, postData);			
 			final HttpEntity entity = response.getEntity();
 			if (entity != null) {
-				currentHtmlResultPage = EntityUtils.toString(entity, "UTF-8");
+				currentHtmlResultPage = EntityUtils.toString(entity, ENCODING);
 				entity.consumeContent();
 			}
 			return response.getStatusLine();
@@ -253,6 +248,22 @@ public class ConnectorMeinBMW extends Connector {
 		catch (IOException e) {
 			throw new WebSMSException(getStringResource(R.string.error_service));
 		}
+	}
+
+	private final HttpResponse performHttpRequestForStatusLineForResponse(final String url, final ArrayList<BasicNameValuePair> postData) throws IOException {
+		try {
+			return performHttpRequestForStatusLineUtils(url, postData);
+		}
+		catch (IOException e) {
+			//HACK: This fails regulary with "SSL shutdown failed: I/O error during system call, Broken pipe",
+			//      see https://issues.apache.org/jira/browse/HTTPCLIENT-951?focusedCommentId=12901563&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#action_12901563
+			//      But in this case the secound try usually works ...
+			return performHttpRequestForStatusLineUtils(url, postData);
+		}
+	}
+
+	private final HttpResponse performHttpRequestForStatusLineUtils(final String url, final ArrayList<BasicNameValuePair> postData) throws IOException {
+		return Utils.getHttpClient(url, null, postData, USER_AGENT, REFERER_URL, ENCODING, SSL_FINGERPRINTS);
 	}
 
 	private final String extractRelativePostUrl() {
