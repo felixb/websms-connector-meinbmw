@@ -19,7 +19,7 @@
 	-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="info.graffy.android.websms.connector.meinbmw"
-	android:versionName="1.2.1" android:versionCode="1007">
+	android:versionName="1.2.1" android:versionCode="1008">
 	<application android:label="@string/app_name" android:icon="@drawable/icon"
 		android:debuggable="true">
 
@@ -62,6 +62,9 @@
 	<supports-screens android:smallScreens="true"
 		android:normalScreens="true" android:largeScreens="true"
 		android:anyDensity="true" />
+	<uses-feature android:name="android.hardware.touchscreen"
+		android:required="false" />
+	<!-- INTERNET needed for sending sms via internet. -->
 	<uses-permission android:name="android.permission.INTERNET" />
 	<!--
 		WAKE_LOCK needed to make sure, sms are send even if user sends device
