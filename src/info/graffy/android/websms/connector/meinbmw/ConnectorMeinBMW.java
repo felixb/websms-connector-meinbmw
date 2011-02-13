@@ -31,16 +31,10 @@ import de.ub0r.android.websms.connector.common.WebSMSException;
 import de.ub0r.android.websms.connector.common.ConnectorSpec.SubConnectorSpec;
 import de.ub0r.android.websms.connector.common.Utils;
 
-import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.StatusLine;
 import org.apache.http.HttpStatus;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.apache.http.HttpEntity;
 
@@ -48,11 +42,10 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 public class ConnectorMeinBMW extends Connector {
 
-	private final static String ROOT_PAGE_URL  = "https://www.meinbmw.de";
+	private final static String ROOT_PAGE_URL = "https://www.meinbmw.de";
 	private final static String SMS_PAGE_URL = "https://www.meinbmw.de/DownloadsServices/Services/SMSService/tabid/80/Default.aspx";
 	private final static String REFERER_URL = "https://www.meinbmw.de/default.aspx";
 	private final static String USER_AGENT = "";
@@ -67,7 +60,6 @@ public class ConnectorMeinBMW extends Connector {
 
 	private static String currentHtmlResultPage;
 	private static Context currentContext;
-	private final static DefaultHttpClient httpclient = new DefaultHttpClient();
 	private final static Pattern sessionInputValueExtractPattern = Pattern.compile(SESSION_INPUT_VALUE_REGEXP, Pattern.DOTALL);
 	private final static Pattern postUrlExtractPattern = Pattern.compile(LOGIN_POST_DESTINATION_REGEXP, Pattern.DOTALL);
 
@@ -137,7 +129,7 @@ public class ConnectorMeinBMW extends Connector {
 		c.setAuthor(getStringResource(R.string.connector_meinbmw_author));
 		c.setBalance(null);
 		c.setCapabilities(ConnectorSpec.CAPABILITIES_SEND | ConnectorSpec.CAPABILITIES_PREFS);
-		c.addSubConnector("", "", SubConnectorSpec.FEATURE_NONE);
+		c.addSubConnector("0", "", SubConnectorSpec.FEATURE_NONE);
 		return c;
 	}
 
