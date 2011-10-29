@@ -50,7 +50,7 @@ public class ConnectorMeinBMW extends Connector {
 	private final static String REFERER_URL = "https://www.meinbmw.de/default.aspx";
 	private final static String USER_AGENT = "";
 	private final static String ENCODING = "UTF-8";
-	private final static String[] SSL_FINGERPRINTS = { "b4:2b:76:39:ec:53:ee:83:39:02:a3:70:c1:fc:a9:a5:f7:24:d5:2a" };
+	private final static String[] SSL_FINGERPRINTS = { "0f:9e:67:16:e7:e0:98:02:22:49:d6:a0:74:9b:76:11:7e:c6:e1:e9" };
 	private final static String SESSION_INPUT_VALUE_REGEXP = ".*<input type=\"hidden\" name=\"__VIEWSTATE_CACHEKEY\" id=\"__VIEWSTATE_CACHEKEY\" value=\"(VS_[a-z\\d]+_\\d+)\" />.*";
 	private final static String LOGIN_POST_DESTINATION_REGEXP = ".*<form name=\"Form\" method=\"post\" action=\"(/DownloadsServices/.+/SMSService/tabid/80/ctl/Login/Default.aspx\\?returnurl=.+\\.aspx)\" id=\"Form\" enctype=\"multipart/form-data\" .*";
 	private final static String SEND_SUCCESS_SUBSTRING = "versendet !";
@@ -249,7 +249,7 @@ public class ConnectorMeinBMW extends Connector {
 		catch (IOException e) {
 			//HACK: This fails regulary with "SSL shutdown failed: I/O error during system call, Broken pipe",
 			//      see https://issues.apache.org/jira/browse/HTTPCLIENT-951?focusedCommentId=12901563&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#action_12901563
-			//      But in this case the secound try usually works ...
+			//      But in this case the second try usually works ...
 			return performHttpRequestForStatusLineUtils(url, postData);
 		}
 	}

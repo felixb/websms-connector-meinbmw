@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2010 Silas Graffy
- *
+ * 
  * This file is part of MeinBMW Connector for WebSMS by Felix Bechstein.
  * 
  * This program is free software; you can redistribute it and/or modify it under
@@ -19,9 +19,9 @@
 package info.graffy.android.websms.connector.meinbmw;
 
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
+import de.ub0r.android.websms.connector.common.ConnectorPreferenceActivity;
 
-public final class Preferences extends PreferenceActivity {
+public final class Preferences extends ConnectorPreferenceActivity {
 	/** Preference key: enabled. */
 	static final String PREFS_ENABLED = "enable_meinbmw";
 	static final String PREFS_USER = "user_meinbmw";
