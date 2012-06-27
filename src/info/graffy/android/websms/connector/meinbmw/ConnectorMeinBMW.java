@@ -19,61 +19,46 @@
 
 package info.graffy.android.websms.connector.meinbmw;
 
-import android.content.ClipboardManager;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-
-import android.text.method.DateTimeKeyListener;
 import de.ub0r.android.websms.connector.common.Connector;
 import de.ub0r.android.websms.connector.common.ConnectorCommand;
 import de.ub0r.android.websms.connector.common.ConnectorSpec;
-import de.ub0r.android.websms.connector.common.WebSMSException;
 import de.ub0r.android.websms.connector.common.ConnectorSpec.SubConnectorSpec;
 import de.ub0r.android.websms.connector.common.Utils;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.StatusLine;
-import org.apache.http.HttpStatus;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-import org.apache.http.HttpEntity;
-
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import de.ub0r.android.websms.connector.common.WebSMSException;
 
 public class ConnectorMeinBMW extends Connector {
 
 	private final static String ROOT_PAGE_URL  = "https://www.meinbmw.de";
-    private final static String SMS_PAGE_URL = "https://www.meinbmw.de/tabid/80/Default.aspx";
-    private final static String REFERER_URL = "https://www.meinbmw.de/Home/tabid/36/ctl/Login/Default.aspx";
+	private final static String SMS_PAGE_URL = "https://www.meinbmw.de/tabid/80/Default.aspx";
+	private final static String REFERER_URL = "https://www.meinbmw.de/Home/tabid/36/ctl/Login/Default.aspx";
 	private final static String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.52 Safari/536.5";
 	private final static String ENCODING = "UTF-8";
 	private final static String[] SSL_FINGERPRINTS = { "b4:2b:76:39:ec:53:ee:83:39:02:a3:70:c1:fc:a9:a5:f7:24:d5:2a", "0f:9e:67:16:e7:e0:98:02:22:49:d6:a0:74:9b:76:11:7e:c6:e1:e9" };
-    private final static String SESSION_INPUT_VALUE_REGEXP = ".*<input type=\"hidden\" name=\"__VIEWSTATE_CACHEKEY\" id=\"__VIEWSTATE_CACHEKEY\" value=\"(VS_[a-z\\d]+_\\d+)\" />.*";
-    private final static String LOGIN_POST_DESTINATION_REGEXP = ".*<form name=\"Form\" method=\"post\" action=\"(/ServiceCenter/.+/SMSService/tabid/80/ctl/Login/Default.aspx\\?returnurl=.+\\.aspx)\".*id=\"Form\" enctype=\"multipart/form-data\" .*";
-    private final static String SEND_SUCCESS_SUBSTRING = "verschickt.";
-    private final static String SMS_PAGE_LOAD_SUCCESS_SUBSTRING = "MeinBMW.de - Service-Center - MeinBMW Services - SMS Service";
-    private final static String WRONG_LOGIN_MESSAGE_SUBSTRING = "Ihre E-Mail-Adresse oder Ihr Passwort ist leider nicht korrekt. Bitte überprüfen Sie Ihre Eingaben."; // TODO changed
-    private final static String TODAYS_SMS_EXPIRED_SUBSTRING = "heute ist erreicht. Bitte nutzen Sie diesen Service wieder ab Morgen";
+	private final static String SESSION_INPUT_VALUE_REGEXP = ".*<input type=\"hidden\" name=\"__VIEWSTATE_CACHEKEY\" id=\"__VIEWSTATE_CACHEKEY\" value=\"(VS_[a-z\\d]+_\\d+)\" />.*";
+	private final static String LOGIN_POST_DESTINATION_REGEXP = ".*<form name=\"Form\" method=\"post\" action=\"(/ServiceCenter/.+/SMSService/tabid/80/ctl/Login/Default.aspx\\?returnurl=.+\\.aspx)\".*id=\"Form\" enctype=\"multipart/form-data\" .*";
+	private final static String SEND_SUCCESS_SUBSTRING = "verschickt.";
+	private final static String SMS_PAGE_LOAD_SUCCESS_SUBSTRING = "MeinBMW.de - Service-Center - MeinBMW Services - SMS Service";
+	private final static String WRONG_LOGIN_MESSAGE_SUBSTRING = "Ihre E-Mail-Adresse oder Ihr Passwort ist leider nicht korrekt. Bitte überprüfen Sie Ihre Eingaben."; // TODO changed
+	private final static String TODAYS_SMS_EXPIRED_SUBSTRING = "heute ist erreicht. Bitte nutzen Sie diesen Service wieder ab Morgen";
 
-    private static String currentHtmlResultPage;
+	private static String currentHtmlResultPage;
 	private static Context currentContext;
-//	private final static DefaultHttpClient httpclient = new DefaultHttpClient();
 	private final static Pattern sessionInputValueExtractPattern = Pattern.compile(SESSION_INPUT_VALUE_REGEXP, Pattern.DOTALL);
 	private final static Pattern postUrlExtractPattern = Pattern.compile(LOGIN_POST_DESTINATION_REGEXP, Pattern.DOTALL);
 
@@ -248,7 +233,6 @@ public class ConnectorMeinBMW extends Connector {
 			if (entity != null) {
 				currentHtmlResultPage = EntityUtils.toString(entity, ENCODING);
 				entity.consumeContent();
-                ((ClipboardManager) currentContext.getSystemService(currentContext.CLIPBOARD_SERVICE)).setText(currentHtmlResultPage);
 			}
 			return response.getStatusLine();
 		}

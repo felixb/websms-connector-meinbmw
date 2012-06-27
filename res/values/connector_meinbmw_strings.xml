@@ -19,7 +19,7 @@
 	-->
 <resources>
 	<string name="app_name">WebSMS Connector: MeinBMW</string>
-	<string name="app_version">1.1.1</string>
+	<string name="app_version">1.2.3</string>
 	<string name="connector_meinbmw_author">Silas Graffy &lt;silas@graffy.info&gt;</string>
 	<string name="connector_meinbmw_name">MeinBMW</string>
 	<string name="connector_meinbmw_preferences">Preferences - MeinBMW</string>
