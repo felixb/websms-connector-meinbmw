@@ -31,7 +31,6 @@ import org.apache.http.StatusLine;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -234,7 +233,6 @@ public class ConnectorMeinBMW extends Connector {
 			if (entity != null) {
 				currentHtmlResultPage = EntityUtils.toString(entity, ENCODING);
 				entity.consumeContent();
-                ((ClipboardManager) currentContext.getSystemService(currentContext.CLIPBOARD_SERVICE)).setText(currentHtmlResultPage);
 			}
 			return response.getStatusLine();
 		}
