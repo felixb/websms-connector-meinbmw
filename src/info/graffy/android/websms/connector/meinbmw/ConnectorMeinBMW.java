@@ -55,7 +55,7 @@ public class ConnectorMeinBMW extends Connector {
 	private final static String SEND_SUCCESS_SUBSTRING = "verschickt.";
 	private final static String SMS_PAGE_LOAD_SUCCESS_SUBSTRING = "MeinBMW.de - Service-Center - MeinBMW Services - SMS Service";
 	private final static String WRONG_LOGIN_MESSAGE_SUBSTRING = "Ihre E-Mail-Adresse oder Ihr Passwort ist leider nicht korrekt. Bitte überprüfen Sie Ihre Eingaben."; // TODO changed
-	private final static String TODAYS_SMS_EXPIRED_SUBSTRING = "heute ist erreicht. Bitte nutzen Sie diesen Service wieder ab Morgen";
+	private final static String TODAYS_SMS_EXPIRED_SUBSTRING = "heute ist erreicht. Bitte nutzen Sie diesen Service wieder ab morgen";
 
 	private static String currentHtmlResultPage;
 	private static Context currentContext;
@@ -261,7 +261,6 @@ public class ConnectorMeinBMW extends Connector {
         o.knownFingerprints = SSL_FINGERPRINTS;
         o.addFormParameter(postData);
         return Utils.getHttpClient(o);
-        //return Utils.getHttpClient(url, null, postData, USER_AGENT, REFERER_URL,ENCODING,true );
 	}
 
 	private final String extractRelativePostUrl() {
