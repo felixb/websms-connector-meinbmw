@@ -53,7 +53,7 @@ public class ConnectorMeinBMW extends Connector {
 	private final static String SESSION_INPUT_VALUE_REGEXP = ".*<input type=\"hidden\" name=\"__VIEWSTATE_CACHEKEY\" id=\"__VIEWSTATE_CACHEKEY\" value=\"(VS_[a-z\\d]+_\\d+)\" />.*";
 	private final static String LOGIN_POST_DESTINATION_REGEXP = ".*<form name=\"Form\" method=\"post\" action=\"(/ServiceCenter/.+/SMSService/tabid/80/ctl/Login/Default.aspx\\?returnurl=.+\\.aspx)\".*id=\"Form\" enctype=\"multipart/form-data\" .*";
 	private final static String SEND_SUCCESS_SUBSTRING = "verschickt.";
-	private final static String SMS_PAGE_LOAD_SUCCESS_SUBSTRING = "MeinBMW.de - Service-Center - MeinBMW Services - SMS Service";
+	private final static String SMS_PAGE_LOAD_SUCCESS_SUBSTRING = "MeinBMW.de - Service-Center - Mein BMW Services - SMS Service";
 	private final static String WRONG_LOGIN_MESSAGE_SUBSTRING = "Ihre E-Mail-Adresse oder Ihr Passwort ist leider nicht korrekt. Bitte überprüfen Sie Ihre Eingaben."; // TODO changed
 	private final static String TODAYS_SMS_EXPIRED_SUBSTRING = "heute ist erreicht. Bitte nutzen Sie diesen Service wieder ab morgen";
 
