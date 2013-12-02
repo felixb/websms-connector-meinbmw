@@ -17,8 +17,8 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.graffy.android.websms.connector.meinbmw"
-    android:versionCode="3125000"
-    android:versionName="1.2.5" >
+    android:versionCode="3126000"
+    android:versionName="1.2.6" >
 
     <application
         android:hardwareAccelerated="false"
