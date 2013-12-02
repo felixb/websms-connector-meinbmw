@@ -49,7 +49,8 @@ public class ConnectorMeinBMW extends Connector {
 	private final static String REFERER_URL = "https://www.meinbmw.de/Home/tabid/36/ctl/Login/Default.aspx";
 	private final static String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.52 Safari/536.5";
 	private final static String ENCODING = "UTF-8";
-	private final static String[] SSL_FINGERPRINTS = { "b4:2b:76:39:ec:53:ee:83:39:02:a3:70:c1:fc:a9:a5:f7:24:d5:2a", "0f:9e:67:16:e7:e0:98:02:22:49:d6:a0:74:9b:76:11:7e:c6:e1:e9" };
+	private final static String[] SSL_FINGERPRINTS = { "b4:2b:76:39:ec:53:ee:83:39:02:a3:70:c1:fc:a9:a5:f7:24:d5:2a", "0f:9e:67:16:e7:e0:98:02:22:49:d6:a0:74:9b:76:11:7e:c6:e1:e9", "df:27:77:83:2d:7b:41:02:61:0d:52:25:f4:c3:a0:0c:6c:3c:3e:1c",
+	"bd:54:a8:bc:61:9d:ec:70:dd:a9:05:39:ea:b6:cc:18:3d:0c:8a:8d"};
 	private final static String SESSION_INPUT_VALUE_REGEXP = ".*<input type=\"hidden\" name=\"__VIEWSTATE_CACHEKEY\" id=\"__VIEWSTATE_CACHEKEY\" value=\"(VS_[a-z\\d]+_\\d+)\" />.*";
 	private final static String LOGIN_POST_DESTINATION_REGEXP = ".*<form name=\"Form\" method=\"post\" action=\"(/ServiceCenter/.+/SMSService/tabid/80/ctl/Login/Default.aspx\\?returnurl=.+\\.aspx)\".*id=\"Form\" enctype=\"multipart/form-data\" .*";
 	private final static String SEND_SUCCESS_SUBSTRING = "verschickt.";
